@@ -22,12 +22,24 @@ public:
 	Span& operator=(Span&& other);
 	
 	void addNumber(int number);
+	
+	template <typename Iterator>
+	void addRange(Iterator begin, Iterator end)
+	{
+		for (auto it = begin; it != end; ++it)
+		{
+			addNumber(*it);
+		}
+	}
+
 	size_t shortestSpan();
 	size_t longestSpan();
+	size_t shortestSpanSlow();
 	size_t longestSpanSlow();
 
 	size_t getSize() const;
 	size_t getCapacity() const;
+	int getElement(size_t index) const;
 	
 	class FullException : public std::exception
 	{
