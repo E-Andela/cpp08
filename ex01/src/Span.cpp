@@ -81,7 +81,7 @@ void Span::addNumber(int number)
 
 static size_t span(int a, int b)
 {
-	return static_cast<size_t>(std::abs(a - b));
+	return static_cast<size_t>(std::llabs(static_cast<long long>(a) - static_cast<long long>(b)));
 }
 
 size_t Span::shortestSpanSlow()
