@@ -2,12 +2,16 @@
 # define MUTANTSTACK_HPP
 
 # include <stack>
-# include <iostream>
 
 template <typename T>
 class MutantStack : public std::stack<T>
 {
 public:
+	MutantStack() = default;
+	MutantStack(const MutantStack&) = default;
+	MutantStack& operator=(const MutantStack&) = default;
+	~MutantStack() = default;
+
 	typedef typename std::stack<T>::container_type::iterator				iterator;
 	typedef typename std::stack<T>::container_type::const_iterator			const_iterator;
 	typedef typename std::stack<T>::container_type::reverse_iterator		reverse_iterator;
@@ -18,7 +22,7 @@ public:
 		return this->c.begin();
 	}
 
-	const_iterator cbegin()
+	const_iterator cbegin() const
 	{
 		return this->c.cbegin();
 	}
@@ -28,7 +32,7 @@ public:
 		return this->c.end();
 	}
 
-	const_iterator cend()
+	const_iterator cend() const
 	{
 		return this->c.cend();
 	}
@@ -38,7 +42,7 @@ public:
 		return this->c.rbegin();
 	}
 
-	const_reverse_iterator crbegin()
+	const_reverse_iterator crbegin() const
 	{
 		return this->c.crbegin();
 	}
@@ -48,7 +52,7 @@ public:
 		return this->c.rend();
 	}
 
-	const_reverse_iterator crend()
+	const_reverse_iterator crend() const
 	{
 		return this->c.crend();
 	}

@@ -71,8 +71,4 @@ int main()
 
 		std::list<int> s(mstack);
 	}
-
-	std::list<int> lst;
-
-	lst.cbegin();
 }

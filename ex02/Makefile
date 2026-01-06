@@ -5,8 +5,7 @@ FLAGS = -Wall -Wextra -Werror -std=c++11
 TARGET = mstack
 
 SRC_DIR = src
-SRC = $(SRC_DIR)/main.cpp \
-	  $(SRC_DIR)/MutantStack.cpp \
+SRC = $(SRC_DIR)/main.cpp
 
 
 OBJ_DIR = obj
