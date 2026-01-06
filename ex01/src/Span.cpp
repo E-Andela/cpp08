@@ -1,7 +1,9 @@
 #include "../inc/Span.hpp"
 #include <iostream>
-#include <bits/stdc++.h>
 #include <chrono>
+#include <cstdlib>
+#include <iterator>
+#include <algorithm>
 
 Span::Span() : _maxSize (0)
 {
@@ -37,8 +39,8 @@ Span::Span(Span&& other)
 {
 	_maxSize = other._maxSize;
 	_numbers = std::move(other._numbers);
-	other._maxSize = 0; // Reset the moved-from object
-	other._numbers.clear(); // Clear the moved-from vector
+	other._maxSize = 0;
+	other._numbers.clear();
 }
 
 Span& Span::operator=(Span&& other)
@@ -47,8 +49,8 @@ Span& Span::operator=(Span&& other)
 	{
 		_maxSize = other._maxSize;
 		_numbers = std::move(other._numbers);
-		other._maxSize = 0; // Reset the moved-from object
-		other._numbers.clear(); // Clear the moved-from vector
+		other._maxSize = 0;
+		other._numbers.clear();
 	}
 	return *this;
 }
@@ -60,7 +62,7 @@ size_t Span::getSize() const
 
 size_t Span::getCapacity() const
 {
-	return _numbers.capacity();
+	return _maxSize;
 }
 
 int Span::getElement(size_t index) const
@@ -79,15 +81,11 @@ void Span::addNumber(int number)
 
 static size_t span(int a, int b)
 {
-	if (a > b)
-		return (a - b);
-	return (b - a);
+	return static_cast<size_t>(std::abs(a - b));
 }
 
 size_t Span::shortestSpanSlow()
 {
-	auto start = std::chrono::high_resolution_clock::now();
-
 	if (_numbers.size() < 2)
 		throw NoSpan();
 
@@ -104,16 +102,13 @@ size_t Span::shortestSpanSlow()
 		}
 	}
 
-	auto end = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	std::cout << "shortestSpanSlow() took: " << duration.count() << " microseconds" << std::endl;
-
 	return minSpan;
 }
 
 size_t Span::shortestSpan()
 {
-	auto start = std::chrono::high_resolution_clock::now();
+	if (_numbers.size() < 2)
+		throw NoSpan();
 
 	std::vector<int> _copy = _numbers;
 	std::sort(_copy.begin(), _copy.end());
@@ -130,37 +125,24 @@ size_t Span::shortestSpan()
 			break;
 	}
 
-	auto end = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	std::cout << "shortestSpan() took: " << duration.count() << " microseconds" << std::endl;
-
 	return minSpan;
 }
 
 size_t Span::longestSpan()
 {
-	auto start = std::chrono::high_resolution_clock::now();
-
 	if (_numbers.size() < 2)
 		throw NoSpan();
 
 	int maxInt = *std::max_element(_numbers.begin(), _numbers.end());
 	int minInt = *std::min_element(_numbers.begin(), _numbers.end());
 
-	auto end = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	std::cout << "longestSpan took: " << duration.count() << " microseconds" << std::endl;
-
 	return (span(maxInt, minInt));
 }
 
 size_t Span::longestSpanSlow()
 {
-	auto start = std::chrono::high_resolution_clock::now();
-
 	if (_numbers.size() < 2)
-		throw NoSpan();
-	
+		throw NoSpan();	
 
 	size_t maxSpan {span(_numbers[0], _numbers[1])};
 	size_t currentSpan {};
@@ -174,10 +156,6 @@ size_t Span::longestSpanSlow()
 				maxSpan = currentSpan;
 		}
 	}
-
-	auto end = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	std::cout << "longestSpanSlow() took: " << duration.count() << " microseconds" << std::endl;
 
 	return maxSpan;
 }
